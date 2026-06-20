@@ -27,7 +27,7 @@ pipeline {
             steps {
                 jiraComment(
                     issueKey: 'SCRUM-7',
-                    comment: 'Jenkins pipeline built and tested successfully!'
+                    body: 'Jenkins pipeline built and tested successfully!'
                 )
             }
         }
