@@ -25,7 +25,7 @@ pipeline {
 
         stage('Performance Test') {
             steps {
-                bat '"C:\\JMeter\\apache-jmeter-5.6.3\\bin\\jmeter.bat" -n -t "src\\test\\jmeter\\performance-test.jmx" -l "src\\test\\jmeter\\results.jtl" -e -o "src\\test\\jmeter\\report"'
+                bat '"C:\\apache-jmeter-5.6.3\\bin\\jmeter.bat" -n -t "src\\test\\jmeter\\performance-test.jmx" -l "src\\test\\jmeter\\results.jtl" -e -o "src\\test\\jmeter\\report"'
             }
         }
 
