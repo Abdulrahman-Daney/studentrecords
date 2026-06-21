@@ -31,6 +31,8 @@ pipeline {
 
         stage('Performance Test') {
             steps {
+                bat 'if exist "src\\test\\jmeter\\report" rmdir /s /q "src\\test\\jmeter\\report"'
+                bat 'if exist "src\\test\\jmeter\\results.jtl" del /f /q "src\\test\\jmeter\\results.jtl"'
                 bat '"C:\\apache-jmeter-5.6.3\\bin\\jmeter.bat" -n -t "src\\test\\jmeter\\performance-test.jmx" -l "src\\test\\jmeter\\results.jtl" -e -o "src\\test\\jmeter\\report"'
             }
         }
