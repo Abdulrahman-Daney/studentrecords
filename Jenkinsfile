@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKERHUB_USERNAME = 'daney5311'
+        IMAGE_NAME = 'studentrecords'
+        IMAGE_TAG = 'latest'
+    }
+
     stages {
 
         stage('Clone Repository') {
@@ -29,11 +35,30 @@ pipeline {
             }
         }
 
+        stage('Build Docker Image') {
+            steps {
+                bat "docker build -t %DOCKERHUB_USERNAME%/%IMAGE_NAME%:%IMAGE_TAG% ."
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    bat "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
+                    bat "docker push %DOCKERHUB_USERNAME%/%IMAGE_NAME%:%IMAGE_TAG%"
+                }
+            }
+        }
+
         stage('Update Jira') {
             steps {
                 jiraComment(
                     issueKey: 'SCRUM-7',
-                    body: 'Jenkins pipeline built, tested, and performance tested successfully!'
+                    body: 'Jenkins pipeline built, tested, and Docker image pushed to Docker Hub successfully!'
                 )
             }
         }
